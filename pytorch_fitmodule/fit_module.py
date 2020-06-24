@@ -100,7 +100,7 @@ class FitModule(Module):
                 batch_loss.backward()
                 opt.step()
                 # Update status
-                epoch_loss += batch_loss.data[0]
+                epoch_loss += batch_loss.item()
                 log['loss'] = float(epoch_loss) / (batch_i + 1)
                 if verbose:
                     pb.bar(batch_i, log_to_message(log))
@@ -111,7 +111,7 @@ class FitModule(Module):
             if X_val is not None and y_val is not None:
                 y_val_pred = self.predict(X_val, batch_size)
                 val_loss = loss(Variable(y_val_pred), Variable(y_val))
-                log['val_loss'] = val_loss.data[0]
+                log['val_loss'] = val_loss.item()
                 if metrics:
                     add_metrics_to_log(log, metrics, y_val, y_val_pred, 'val_')
             logs.append(log)
